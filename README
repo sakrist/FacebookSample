@@ -10,9 +10,11 @@ Looks like as the Facebook Sheet in iOS 6.
 
 How to use
 
-1. #import "DEFacebookComposeViewController.h"
+1. download and setup Facebook sdk https://developers.facebook.com/ios/
 
-Second:
+2. #import "DEFacebookComposeViewController.h"
+
+3.
  DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
         switch (result) {
             case DEFacebookComposeViewControllerResultCancelled:
