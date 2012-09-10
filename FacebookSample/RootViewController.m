@@ -43,14 +43,12 @@
         [self dismissModalViewControllerAnimated:YES];
     };
     
-    DEFacebookComposeViewController *tcvc = [[DEFacebookComposeViewController alloc] init];
+    DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [tcvc setInitialText:@"Look on this"];
-    [tcvc addImage:[UIImage imageNamed:@"1.jpg"]];
-    tcvc.completionHandler = completionHandler;
-    [self presentViewController:tcvc animated:YES completion:^{
-        
-    }];
+    [facebookViewComposer setInitialText:@"Look on this"];
+    [facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
+    facebookViewComposer.completionHandler = completionHandler;
+    [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
 
 }
 

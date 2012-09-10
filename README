@@ -1,0 +1,34 @@
+This project based on https://github.com/doubleencore/DETweetComposeViewController
+
+Facebook connection based on SDK 3.0.x (last one on 2 september 2012)
+
+
+What is it?
+DEFacebookComposeViewController is an iOS 4 compatible. 
+Looks like as the Facebook Sheet in iOS 6.
+
+
+How to use
+
+1. #import "DEFacebookComposeViewController.h"
+
+Second:
+ DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
+        switch (result) {
+            case DEFacebookComposeViewControllerResultCancelled:
+                NSLog(@"Facebook Result: Cancelled");
+                break;
+            case DEFacebookComposeViewControllerResultDone:
+                NSLog(@"Facebook Result: Sent");
+                break;
+        }
+        
+        [self dismissModalViewControllerAnimated:YES];
+    };
+    
+    DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
+    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [facebookViewComposer setInitialText:@"Look on this"];
+    [facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
+    facebookViewComposer.completionHandler = completionHandler;
+    [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
