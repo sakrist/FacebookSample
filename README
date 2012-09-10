@@ -12,9 +12,13 @@ How to use
 
 1. download and setup Facebook sdk https://developers.facebook.com/ios/
 
-2. #import "DEFacebookComposeViewController.h"
+2. register your app on http://developers.facebook.com
 
-3.
+3. replace on your app id in plist file. FacebookAppID and in CFBundleURLTypes
+
+4. #import "DEFacebookComposeViewController.h"
+
+5.
  DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
         switch (result) {
             case DEFacebookComposeViewControllerResultCancelled:
