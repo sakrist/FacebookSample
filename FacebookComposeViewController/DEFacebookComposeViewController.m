@@ -746,7 +746,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     
     if (![FBSession.activeSession isOpen]) {
         
-        [FBSession openActiveSessionWithPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil]
+        [FBSession openActiveSessionWithPermissions:[NSArray arrayWithObjects: @"read_stream", @"publish_actions", @"publish_stream", nil]
                                                allowLoginUI:YES
                                   completionHandler:^(FBSession *session,
                                                       FBSessionState status,
@@ -767,7 +767,14 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     self.sendButton.enabled = NO;
         
 //    self.urls;
-
+    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [activity setCenter:CGPointMake(_sendButton.frame.size.width/2, _sendButton.frame.size.height/2)];
+    [_sendButton setTitle:@"" forState:UIControlStateNormal];
+    [_sendButton addSubview:activity];
+    [activity startAnimating];
+    [activity release];
+    self.view.userInteractionEnabled = NO;
+    
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObject:self.textView.text forKey:@"message"];
     [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
     
@@ -782,7 +789,12 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
         if (error)
         {
             NSLog(@"    error");
-
+            
+            // remove activity
+            [[[self.sendButton subviews] lastObject] removeFromSuperview];
+            [self.sendButton setTitle:@"Post" forState:UIControlStateNormal];
+            self.view.userInteractionEnabled = YES;
+            
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Message", @"")
                                                                  message:[NSString stringWithFormat:NSLocalizedString(@"The message, \"%@\" cannot be sent because the connection to Facebook failed.", @""), self.textView.text]
                                                                 delegate:self
@@ -792,6 +804,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
             [alertView show];
             
             self.sendButton.enabled = YES;
+            
             
         }
         else
