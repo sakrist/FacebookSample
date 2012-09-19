@@ -469,6 +469,8 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 
 - (BOOL)addImage:(UIImage *)image
 {
+    [self.images removeAllObjects];
+    
     if (image == nil) {
         return NO;
     }
@@ -476,19 +478,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     if ([self isPresented]) {
         return NO;
     }
-    
-    if ([self.images count] >= DEFacebookMaxImages) {
-        return NO;
-    }
-    
-    if ([self attachmentsCount] >= 3) {
-        return NO;  // Only three allowed.
-    }
-    
-    if (([self charactersAvailable] - (DEFacebookURLLength + 1)) < 0) {  // Add one for the space character.
-        return NO;
-    }
-    
+        
     [self.images addObject:image];
     return YES;
 }
@@ -514,21 +504,10 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 }
 
 
-- (BOOL)addURL:(NSURL *)url
+- (BOOL)addURL:(NSString *)url
 {
+    [self.urls removeAllObjects];
     if (url == nil) {
-        return NO;
-    }
-    
-    if ([self isPresented]) {
-        return NO;
-    }
-    
-    if ([self attachmentsCount] >= 3) {
-        return NO;  // Only three allowed.
-    }
-    
-    if (([self charactersAvailable] - (DEFacebookURLLength + 1)) < 0) {  // Add one for the space character.
         return NO;
     }
     
@@ -537,15 +516,6 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 }
 
 
-- (BOOL)removeAllURLs
-{
-    if ([self isPresented]) {
-        return NO;
-    }
-    
-    [self.urls removeAllObjects];
-    return YES;
-}
 
 
 #pragma mark - Private
@@ -766,7 +736,6 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     
     self.sendButton.enabled = NO;
         
-//    self.urls;
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activity setCenter:CGPointMake(_sendButton.frame.size.width/2, _sendButton.frame.size.height/2)];
     [_sendButton setTitle:@"" forState:UIControlStateNormal];
@@ -776,12 +745,25 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     self.view.userInteractionEnabled = NO;
     
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObject:self.textView.text forKey:@"message"];
-    [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
+    
+    NSString *graphPath = @"me/feed";
+    
+    
+    
+    if ([self.urls count] > 0) {
+        [d setObject:[self.urls lastObject] forKey:@"link"];
+    }
+    
+    if ([self.images count] > 0) {
+        [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
+        graphPath = @"me/photos";
+    }
+
     
     // create the connection object
     FBRequestConnection *newConnection = [[FBRequestConnection alloc] init];
     FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
-                                                  graphPath:@"me/photos"
+                                                  graphPath:graphPath
                                                  parameters:d
                                                  HTTPMethod:@"POST"];
     

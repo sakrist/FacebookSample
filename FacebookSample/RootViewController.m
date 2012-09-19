@@ -46,7 +46,14 @@
     DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     [facebookViewComposer setInitialText:@"Look on this"];
+    
+    // optional
     [facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
+    // or
+    // optional
+//    [facebookViewComposer addURL:@"http://applications.3d4medical.com/heart_pro.php"];
+    
+    
     facebookViewComposer.completionHandler = completionHandler;
     [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
 
