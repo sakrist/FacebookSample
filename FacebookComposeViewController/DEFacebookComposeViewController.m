@@ -53,8 +53,6 @@ static BOOL waitingForAccess = NO;
 - (void)tweetComposeViewControllerInit;
 - (void)updateFramesForOrientation:(UIInterfaceOrientation)interfaceOrientation;
 - (BOOL)isPresented;
-- (NSInteger)charactersAvailable;
-- (void)updateCharacterCount;
 - (NSInteger)attachmentsCount;
 - (void)updateAttachments;
 - (UIImage*)captureScreen;
@@ -285,7 +283,6 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 
     
     
-//    [self updateCharacterCount];
     [self updateAttachments];
     
     [self.navImage setNeedsDisplay];
@@ -453,10 +450,6 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 - (BOOL)setInitialText:(NSString *)initialText
 {
     if ([self isPresented]) {
-        return NO;
-    }
-    
-    if (([self charactersAvailable] - (NSInteger)[initialText length]) < 0) {
         return NO;
     }
     
@@ -628,35 +621,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 }
 
 
-- (NSInteger)charactersAvailable
-{
-    NSInteger available = DEFacebookMaxLength;
-    available -= (DEFacebookURLLength + 1) * [self.images count];
-    available -= (DEFacebookURLLength + 1) * [self.urls count];
-    available -= [self.textView.text length];
-    
-    if ( (available < DEFacebookMaxLength) && ([self.textView.text length] == 0) ) {
-        available += 1;  // The space we added for the first URL isn't needed.
-    }
-    
-    return available;
-}
 
-
-- (void)updateCharacterCount
-{
-    NSInteger available = [self charactersAvailable];
-    
-    
-    if (available >= 0) {
-        self.characterCountLabel.textColor = [UIColor grayColor];
-        self.sendButton.enabled = (available != DEFacebookMaxLength);  // At least one character is required.
-    }
-    else {
-        self.characterCountLabel.textColor = [UIColor colorWithRed:0.64f green:0.32f blue:0.32f alpha:1.0f];
-        self.sendButton.enabled = NO;
-    }
-}
 
 
 - (NSInteger)attachmentsCount
