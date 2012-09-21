@@ -40,6 +40,17 @@ How to use
     [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
 
 
+6. add this code to your main class and you should be sure if app is entered to this method
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    // attempt to extract a token from the url
+    return [FBSession.activeSession handleOpenURL:url];
+}
+
+
+
 
 Post on my blog http://www.developers-life.com/facebook-compose-view.html
 Welcome for any questions
