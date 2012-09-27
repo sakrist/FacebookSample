@@ -56,6 +56,7 @@
     
     facebookViewComposer.completionHandler = completionHandler;
     [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
+    [facebookViewComposer release];
 
 }
 
@@ -64,7 +65,7 @@
 - (IBAction)likesCheck:(id)sender {
     
 
-    FBRequestConnection *newConnection = [[FBRequestConnection alloc] init];
+    FBRequestConnection *newConnection = [[[FBRequestConnection alloc] init] autorelease];
     FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
                                                   graphPath:@"me/likes"
                                                  parameters:[NSMutableDictionary dictionary]
@@ -100,6 +101,9 @@
     }];
     
     [newConnection start];
+    
+    [request release];
+    
 }
 
 

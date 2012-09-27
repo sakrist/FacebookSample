@@ -224,6 +224,8 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     [_accountPickerView release], _accountPickerView = nil;
     [_accountPickerPopoverController release], _accountPickerPopoverController = nil;
     
+    NSLog(@"DEALLOC DEFacebookComposeViewController");
+    
     [super dealloc];
 }
 
@@ -730,7 +732,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 
     
     // create the connection object
-    FBRequestConnection *newConnection = [[FBRequestConnection alloc] init];
+    FBRequestConnection *newConnection = [[[FBRequestConnection alloc] init] autorelease];
     FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
                                                   graphPath:graphPath
                                                  parameters:d
@@ -781,7 +783,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     }];
     
     [newConnection start];
-
+    [request release];
 }
 
 
