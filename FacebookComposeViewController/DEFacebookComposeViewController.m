@@ -607,6 +607,7 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     
     self.gradientView.frame = self.gradientView.superview.bounds;
     
+    [FBSession openActiveSessionWithAllowLoginUI:NO];
     
     if (![FBSession.activeSession isOpen]) {
         [self.sendButton setTitle:@"Log in" forState:UIControlStateNormal];
@@ -681,8 +682,11 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
     
     if (![FBSession.activeSession isOpen]) {
         
-        [FBSession openActiveSessionWithPermissions:[NSArray arrayWithObjects: @"read_stream", @"publish_actions", @"publish_stream", nil]
-                                               allowLoginUI:YES
+        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects: @"read_stream", @"publish_actions",
+                                                            @"publish_stream", nil]
+                                           defaultAudience:FBSessionDefaultAudienceEveryone
+                                              allowLoginUI:YES
+
                                   completionHandler:^(FBSession *session,
                                                       FBSessionState status,
                                                       NSError *error) {
