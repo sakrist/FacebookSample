@@ -1,6 +1,6 @@
 This project based on https://github.com/doubleencore/DETweetComposeViewController
 
-Facebook connection based on SDK 3.0.x (last at 2 september 2012)
+Facebook connection based on SDK 3.1 (last at 25 september 2012)
 
 
 What is it?
