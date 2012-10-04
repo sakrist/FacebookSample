@@ -16,9 +16,10 @@ How to use
 
 3. replace on your app id in plist file. FacebookAppID and in CFBundleURLTypes
 
-4. #import "DEFacebookComposeViewController.h"
+4. \#import "DEFacebookComposeViewController.h"
 
-5.
+5. example of usage
+```
  DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
         switch (result) {
             case DEFacebookComposeViewControllerResultCancelled:
@@ -37,17 +38,21 @@ How to use
     [facebookViewComposer setInitialText:@"Look on this"];
     [facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
     facebookViewComposer.completionHandler = completionHandler;
-    [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
+    [self presentViewController:facebookViewComposer animated:YES completion:^{ }]; 
+```
 
 
 6. add this code to your main class and you should be sure if app is entered to this method
+```
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
+
     // attempt to extract a token from the url
     return [FBSession.activeSession handleOpenURL:url];
 }
+```
 
 
 
@@ -55,7 +60,8 @@ How to use
 Post on my blog http://www.developers-life.com/facebook-compose-view.html
 Welcome for any questions
 
-If you liked it you can support me.
+If you liked it, you can support me:
+
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4VMLFZ986FNW">
 <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
 </a>
