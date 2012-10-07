@@ -3,7 +3,7 @@
 //  FacebookSample
 //
 //  Created by Vladmir on 10/09/2012.
-//  Copyright (c) 2012 Vladmir. All rights reserved.
+//  Copyright (c) 2012 www.developers-life.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
