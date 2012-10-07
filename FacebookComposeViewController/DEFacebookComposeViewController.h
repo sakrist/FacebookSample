@@ -50,7 +50,6 @@ UIPopoverControllerDelegate>
 @property (assign, nonatomic) IBOutlet UIImageView *navImage;
 
     // Public
-
 - (IBAction)send;
 - (IBAction)cancel;
 
@@ -58,6 +57,8 @@ enum DEFacebookComposeViewControllerResult {
     DEFacebookComposeViewControllerResultCancelled,
     DEFacebookComposeViewControllerResultDone
 };
+
+
 typedef enum DEFacebookComposeViewControllerResult DEFacebookComposeViewControllerResult;
 
     // Completion handler for DEFacebookComposeViewController
@@ -96,9 +97,6 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
     // to be called on any particular thread.
 @property (nonatomic, copy) DEFacebookComposeViewControllerCompletionHandler completionHandler;
 
-    // On iOS5+, set to YES to prevent from using built in Twitter credentials.
-    // Set to NO by default.
-@property (assign, nonatomic) BOOL alwaysUseDETwitterCredentials;
 
 
 @end

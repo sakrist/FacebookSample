@@ -10,6 +10,8 @@
 #import "DEFacebookComposeViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
+#import <Social/Social.h>
+
 @interface RootViewController ()
 @end
 
@@ -30,18 +32,6 @@
 }
 
 - (IBAction) shareViaFacebook: (id)sender {
-    DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
-        switch (result) {
-            case DEFacebookComposeViewControllerResultCancelled:
-                NSLog(@"Facebook Result: Cancelled");
-                break;
-            case DEFacebookComposeViewControllerResultDone:
-                NSLog(@"Facebook Result: Sent");
-                break;
-        }
-        
-        [self dismissModalViewControllerAnimated:YES];
-    };
     
     DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -53,9 +43,21 @@
     // optional
 //    [facebookViewComposer addURL:@"http://applications.3d4medical.com/heart_pro.php"];
     
+    [facebookViewComposer setCompletionHandler:^(DEFacebookComposeViewControllerResult result) {
+        switch (result) {
+            case DEFacebookComposeViewControllerResultCancelled:
+                NSLog(@"Facebook Result: Cancelled");
+                break;
+            case DEFacebookComposeViewControllerResultDone:
+                NSLog(@"Facebook Result: Sent");
+                break;
+        }
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }];
     
-    facebookViewComposer.completionHandler = completionHandler;
     [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
+    
     [facebookViewComposer release];
 
 }

@@ -32,6 +32,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <FacebookSDK/FacebookSDK.h>
 
+#import <Social/Social.h>
+
 static BOOL waitingForAccess = NO;
 
 
@@ -50,12 +52,11 @@ static BOOL waitingForAccess = NO;
 @property (nonatomic, retain) UIPopoverController *accountPickerPopoverController;
 
 
-- (void)tweetComposeViewControllerInit;
+- (void)facebookComposeViewControllerInit;
 - (void)updateFramesForOrientation:(UIInterfaceOrientation)interfaceOrientation;
 - (BOOL)isPresented;
 - (NSInteger)attachmentsCount;
 - (void)updateAttachments;
-- (UIImage*)captureScreen;
 
 @end
 
@@ -81,7 +82,6 @@ static BOOL waitingForAccess = NO;
 
     // Public
 @synthesize completionHandler = _completionHandler;
-@synthesize alwaysUseDETwitterCredentials = _alwaysUseDETwitterCredentials;
 
     // Private
 @synthesize text = _text;
@@ -103,72 +103,35 @@ enum {
     DEFacebookComposeViewControllerCannotSendAlert
 };
 
-NSInteger const DEFacebookMaxLength = 140;
-NSInteger const DEFacebookURLLength = 20;  // https://dev.twitter.com/docs/tco-url-wrapper
-NSInteger const DEFacebookMaxImages = 1;  // We'll get this dynamically later, but not today.
-static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccountIdentifier";
-
 #define degreesToRadians(x) (M_PI * x / 180.0f)
 
 
 #pragma mark - Class Methods
 
 
-
-- (UIImage *) captureScreen {
-    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-    CGRect rect = [keyWindow bounds];
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if (![[UIApplication sharedApplication] isStatusBarHidden]) {
-        CGFloat statusBarOffset = -20.0f;
-        if ( UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation]))
-        {
-            CGContextTranslateCTM(context,statusBarOffset, 0.0f);
-
-        }else
-        {
-            CGContextTranslateCTM(context, 0.0f, statusBarOffset);
-        }
-    }
-    
-    [keyWindow.layer renderInContext:context];   
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIImageOrientation imageOrientation;
-    switch ([UIApplication sharedApplication].statusBarOrientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-            imageOrientation = UIImageOrientationRight;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            imageOrientation = UIImageOrientationLeft;
-            break;
-        case UIInterfaceOrientationPortrait:
-            imageOrientation = UIImageOrientationUp;
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            imageOrientation = UIImageOrientationDown;
-            break;
-        default:
-            break;
-    }
-    
-    UIImage *outputImage = [[[UIImage alloc] initWithCGImage: image.CGImage
-                                                      scale: 1.0
-                                                orientation: imageOrientation] autorelease];
-    return outputImage;
-}
-
 #pragma mark - Setup & Teardown
+
+
+- (id)init
+{
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 6) {
+        self = [(DEFacebookComposeViewController*)[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook] retain];
+        return self;
+    }
+    
+    self = [super init];
+    if (self) {
+        [self facebookComposeViewControllerInit];
+    }
+    return self;
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self tweetComposeViewControllerInit];
+        [self facebookComposeViewControllerInit];
     }
     return self;
 }
@@ -178,13 +141,13 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self tweetComposeViewControllerInit];
+        [self facebookComposeViewControllerInit];
     }
     return self;
 }
 
 
-- (void)tweetComposeViewControllerInit
+- (void)facebookComposeViewControllerInit
 {
     _images = [[NSMutableArray alloc] init];
     _urls = [[NSMutableArray alloc] init];
@@ -295,20 +258,6 @@ static NSString * const DEFacebookLastAccountIdentifier = @"DEFacebookLastAccoun
 {
     [super viewWillAppear:animated];
 
-        // Take a snapshot of the current view, and make that our background after our view animates into place.
-        // This only works if our orientation is the same as the presenting view.
-        // If they don't match, just display the gray background.
-    if (self.interfaceOrientation == self.fromViewController.interfaceOrientation) {
-//        UIImage *backgroundImage = [self captureScreen];
-//        self.backgroundImageView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
-    }
-    else {
-//        self.backgroundImageView = [[[UIImageView alloc] initWithFrame:self.fromViewController.view.bounds] autorelease];
-    }
-//    self.backgroundImageView.autoresizingMask = UIViewAutoresizingNone;
-//    self.backgroundImageView.alpha = 0.0f;
-//    self.backgroundImageView.backgroundColor = [UIColor lightGrayColor];
-//    [self.view insertSubview:self.backgroundImageView atIndex:0];
     
         // Now let's fade in a gradient view over the presenting view.
     self.gradientView = [[[DEFacebookGradientView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds] autorelease];
