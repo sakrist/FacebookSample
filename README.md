@@ -7,6 +7,7 @@ What is it?
 DEFacebookComposeViewController is an iOS 4 compatible. 
 Looks like as the Facebook Sheet in iOS 6.
 
+<img src="https://raw.github.com/sakrist/FacebookSample/master/Screen%20Shot%202012-09-10%20at%2010.30.48%20PM.jpg" />
 
 How to use
 
