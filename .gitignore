@@ -1,0 +1,18 @@
+# Mac OS X Finder and whatnot
+.DS_Store
+
+# build products
+build/
+*.[oa]
+
+# automatic backup files
+*~.nib
+*.swp
+*~
+*(Autosaved).rtfd/
+Backup[ ]of[ ]*.pages/
+Backup[ ]of[ ]*.key/
+Backup[ ]of[ ]*.numbers/
+
+#
+xcuserdata
