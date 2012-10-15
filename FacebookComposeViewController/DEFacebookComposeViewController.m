@@ -664,7 +664,14 @@ enum {
     [activity release];
     self.view.userInteractionEnabled = NO;
     
-    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObject:self.textView.text forKey:@"message"];
+    NSMutableDictionary *d = nil;
+    if ( [self.urls count] > 0 && [self.images count] > 0 ) {
+        d = [NSMutableDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@\n%@",self.textView.text,[self.urls lastObject]]
+                                               forKey:@"message"];
+    } else {
+        d = [NSMutableDictionary dictionaryWithObject:self.textView.text
+                                               forKey:@"message"];
+    }
     
     NSString *graphPath = @"me/feed";
     
@@ -679,7 +686,6 @@ enum {
         graphPath = @"me/photos";
     }
 
-    
     // create the connection object
     FBRequestConnection *newConnection = [[[FBRequestConnection alloc] init] autorelease];
     FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
