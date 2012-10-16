@@ -11,7 +11,7 @@ Looks like as the Facebook Sheet in iOS 6.
 
 How to use
 
-1. download and setup Facebook sdk https://developers.facebook.com/ios/
+1. download and setup Facebook sdk https://developers.facebook.com/ios/ or from git https://github.com/facebook/facebook-ios-sdk
 
 2. register your app on http://developers.facebook.com
 
