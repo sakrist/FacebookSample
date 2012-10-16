@@ -16,3 +16,5 @@ Backup[ ]of[ ]*.numbers/
 
 #
 xcuserdata
+
+FacebookSDK.framework/**
