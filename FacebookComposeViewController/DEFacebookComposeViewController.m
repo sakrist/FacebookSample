@@ -205,7 +205,8 @@ enum {
 {
     [super viewDidLoad];
     
-    [self.cancelButton setTitle:NSLocalizedString(@"Cancel",@"") forState:UIControlStateNormal];
+    [self setCancelButtonTitle:NSLocalizedString(@"Cancel",@"")];
+    [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
 
     self.view.backgroundColor = [UIColor clearColor];
     self.textViewContainer.backgroundColor = [UIColor clearColor];
@@ -571,7 +572,7 @@ enum {
     [FBSession openActiveSessionWithAllowLoginUI:NO];
     
     if (![FBSession.activeSession isOpen]) {
-        [self.sendButton setTitle:NSLocalizedString(@"Log in",@"") forState:UIControlStateNormal];
+        [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
     }
     [self.navImage setNeedsDisplay];
 }
@@ -655,7 +656,7 @@ enum {
                                           NSLog(@"error");
                                       } else {
                                           [FBSession setActiveSession:session];
-                                          [self.sendButton setTitle:NSLocalizedString(@"Post",@"") forState:UIControlStateNormal];
+                                          [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
                                       }
                                   }];
         
@@ -667,7 +668,7 @@ enum {
         
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activity setCenter:CGPointMake(_sendButton.frame.size.width/2, _sendButton.frame.size.height/2)];
-    [_sendButton setTitle:@"" forState:UIControlStateNormal];
+    [self setSendButtonTitle:@""];
     [_sendButton addSubview:activity];
     [activity startAnimating];
     [activity release];
@@ -713,7 +714,7 @@ enum {
             
             // remove activity
             [[[self.sendButton subviews] lastObject] removeFromSuperview];
-            [self.sendButton setTitle:NSLocalizedString(@"Post",@"") forState:UIControlStateNormal];
+            [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
             self.view.userInteractionEnabled = YES;
             
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Message", @"")
@@ -806,5 +807,36 @@ enum {
     }
 }
 
+
+#pragma mark - Button width
+
+- (void)setSendButtonTitle:(NSString *)title
+{
+    UIButton *button = self.sendButton;
+    [button setTitle:title forState:UIControlStateNormal];
+    [self autoSizeButton:button right:YES];
+}
+
+- (void)setCancelButtonTitle:(NSString *)title
+{
+    UIButton *button = self.cancelButton;
+    [button setTitle:title forState:UIControlStateNormal];
+    [self autoSizeButton:button right:NO];
+}
+
+- (void)autoSizeButton:(UIButton *)button right:(BOOL)right
+{
+    NSString *title = button.titleLabel.text;
+    
+    CGSize s = [title sizeWithFont:button.titleLabel.font];
+    s.width += 14.f; // padding
+    
+    CGRect frame = button.frame;
+    CGFloat offset = s.width - frame.size.width;
+    
+    if (right) frame.origin.x -= offset;
+    frame.size.width = s.width;
+    button.frame = frame;
+}
 
 @end
