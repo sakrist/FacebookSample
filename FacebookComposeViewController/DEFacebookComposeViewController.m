@@ -204,6 +204,9 @@ enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.cancelButton setTitle:NSLocalizedString(@"Cancel",@"") forState:UIControlStateNormal];
+
     self.view.backgroundColor = [UIColor clearColor];
     self.textViewContainer.backgroundColor = [UIColor clearColor];
     self.textView.backgroundColor = [UIColor clearColor];
@@ -568,7 +571,7 @@ enum {
     [FBSession openActiveSessionWithAllowLoginUI:NO];
     
     if (![FBSession.activeSession isOpen]) {
-        [self.sendButton setTitle:@"Log in" forState:UIControlStateNormal];
+        [self.sendButton setTitle:NSLocalizedString(@"Log in",@"") forState:UIControlStateNormal];
     }
     [self.navImage setNeedsDisplay];
 }
@@ -652,7 +655,7 @@ enum {
                                           NSLog(@"error");
                                       } else {
                                           [FBSession setActiveSession:session];
-                                          [self.sendButton setTitle:@"Post" forState:UIControlStateNormal];
+                                          [self.sendButton setTitle:NSLocalizedString(@"Post",@"") forState:UIControlStateNormal];
                                       }
                                   }];
         
@@ -710,7 +713,7 @@ enum {
             
             // remove activity
             [[[self.sendButton subviews] lastObject] removeFromSuperview];
-            [self.sendButton setTitle:@"Post" forState:UIControlStateNormal];
+            [self.sendButton setTitle:NSLocalizedString(@"Post",@"") forState:UIControlStateNormal];
             self.view.userInteractionEnabled = YES;
             
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Message", @"")
