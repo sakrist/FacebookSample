@@ -115,7 +115,12 @@ enum {
 
 - (id)init
 {
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 6) {
+    return [self initForceUseCustomController:NO];
+}
+
+- (id)initForceUseCustomController:(BOOL)custom
+{
+    if (!custom && [[UIDevice currentDevice].systemVersion floatValue] >= 6) {
         self = [(DEFacebookComposeViewController*)[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook] retain];
         return self;
     }
@@ -126,7 +131,6 @@ enum {
     }
     return self;
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

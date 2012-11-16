@@ -99,4 +99,7 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
 
 @property (nonatomic, copy) NSDictionary *customParameters;
 
+    // Force use SLComposeViewController on iOS 6 or not
+- (id)initForceUseCustomController:(BOOL)custom;
+
 @end
