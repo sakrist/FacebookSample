@@ -215,7 +215,7 @@ enum {
         self.textView.keyboardType = UIKeyboardTypeTwitter;
     }
     else {
-        self.fromViewController = self.parentViewController;
+        self.fromViewController = self.parentController;
     }
     
     
@@ -310,7 +310,7 @@ enum {
 {
     [super viewWillDisappear:animated];
     
-    UIView *presentingView = [UIDevice de_isIOS5] ? self.fromViewController.view : self.parentViewController.view;
+    UIView *presentingView = [UIDevice de_isIOS5] ? self.fromViewController.view : self.parentController.view;
     [presentingView addSubview:self.gradientView];
     
     [self.backgroundImageView removeFromSuperview];
@@ -330,8 +330,8 @@ enum {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if ([self.parentViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
-        return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    if ([self.parentController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
+        return [self.parentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
     
     if ([UIDevice de_isPhone]) {
@@ -783,6 +783,23 @@ enum {
                 // The user wants to try again.
             [self send];
         }
+    }
+}
+
+#pragma mark - Parent View Controller
+
+- (UIViewController *)parentController
+{
+    float currentVersion = 5.0;
+    float sysVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    
+    if (sysVersion >= currentVersion) {
+        // iOS 5.0 or later version of iOS specific functionality hanled here
+        return self.presentingViewController;
+    }
+    else {
+        //Previous than iOS 5.0 specific functionality
+        return self.parentViewController;
     }
 }
 
