@@ -82,6 +82,7 @@ static BOOL waitingForAccess = NO;
 
     // Public
 @synthesize completionHandler = _completionHandler;
+@synthesize customParameters = _customParameters;
 
     // Private
 @synthesize text = _text;
@@ -175,6 +176,7 @@ enum {
     
         // Public
     [_completionHandler release], _completionHandler = nil;
+    [_customParameters release], _customParameters = nil;
     
         // Private
     [_text release], _text = nil;
@@ -359,6 +361,7 @@ enum {
 {
         // Keep:
         //  _completionHandler
+        //  _customParameters
         //  _text
         //  _images
         //  _urls
@@ -683,6 +686,10 @@ enum {
     if ([self.images count] > 0) {
         [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
         graphPath = @"me/photos";
+    }
+    
+    if ([self.customParameters count] > 0) {
+        [d addEntriesFromDictionary:self.customParameters];
     }
 
     // create the connection object
