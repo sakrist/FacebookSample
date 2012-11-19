@@ -97,6 +97,9 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
     // to be called on any particular thread.
 @property (nonatomic, copy) DEFacebookComposeViewControllerCompletionHandler completionHandler;
 
+@property (nonatomic, copy) NSDictionary *customParameters;
 
+    // Force use SLComposeViewController on iOS 6 or not
+- (id)initForceUseCustomController:(BOOL)custom;
 
 @end
