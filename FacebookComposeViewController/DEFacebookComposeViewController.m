@@ -82,6 +82,7 @@ static BOOL waitingForAccess = NO;
 
     // Public
 @synthesize completionHandler = _completionHandler;
+@synthesize customParameters = _customParameters;
 
     // Private
 @synthesize text = _text;
@@ -114,7 +115,12 @@ enum {
 
 - (id)init
 {
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 6) {
+    return [self initForceUseCustomController:NO];
+}
+
+- (id)initForceUseCustomController:(BOOL)custom
+{
+    if (!custom && [[UIDevice currentDevice].systemVersion floatValue] >= 6) {
         self = [(DEFacebookComposeViewController*)[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook] retain];
         return self;
     }
@@ -125,7 +131,6 @@ enum {
     }
     return self;
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -175,6 +180,7 @@ enum {
     
         // Public
     [_completionHandler release], _completionHandler = nil;
+    [_customParameters release], _customParameters = nil;
     
         // Private
     [_text release], _text = nil;
@@ -198,6 +204,10 @@ enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setCancelButtonTitle:NSLocalizedString(@"Cancel",@"")];
+    [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
+
     self.view.backgroundColor = [UIColor clearColor];
     self.textViewContainer.backgroundColor = [UIColor clearColor];
     self.textView.backgroundColor = [UIColor clearColor];
@@ -209,7 +219,7 @@ enum {
         self.textView.keyboardType = UIKeyboardTypeTwitter;
     }
     else {
-        self.fromViewController = self.parentViewController;
+        self.fromViewController = self.parentController;
     }
     
     
@@ -304,7 +314,7 @@ enum {
 {
     [super viewWillDisappear:animated];
     
-    UIView *presentingView = [UIDevice de_isIOS5] ? self.fromViewController.view : self.parentViewController.view;
+    UIView *presentingView = [UIDevice de_isIOS5] ? self.fromViewController.view : self.parentController.view;
     [presentingView addSubview:self.gradientView];
     
     [self.backgroundImageView removeFromSuperview];
@@ -324,8 +334,8 @@ enum {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if ([self.parentViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
-        return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    if ([self.parentController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
+        return [self.parentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
     
     if ([UIDevice de_isPhone]) {
@@ -359,6 +369,7 @@ enum {
 {
         // Keep:
         //  _completionHandler
+        //  _customParameters
         //  _text
         //  _images
         //  _urls
@@ -561,7 +572,7 @@ enum {
     [FBSession openActiveSessionWithAllowLoginUI:NO];
     
     if (![FBSession.activeSession isOpen]) {
-        [self.sendButton setTitle:@"Log in" forState:UIControlStateNormal];
+        [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
     }
     [self.navImage setNeedsDisplay];
 }
@@ -633,8 +644,7 @@ enum {
     
     if (![FBSession.activeSession isOpen]) {
         
-        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects: @"read_stream", @"publish_actions",
-                                                            @"publish_stream", nil]
+        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"publish_stream", nil]
                                            defaultAudience:FBSessionDefaultAudienceEveryone
                                               allowLoginUI:YES
 
@@ -646,7 +656,7 @@ enum {
                                           NSLog(@"error");
                                       } else {
                                           [FBSession setActiveSession:session];
-                                          [self.sendButton setTitle:@"Post" forState:UIControlStateNormal];
+                                          [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
                                       }
                                   }];
         
@@ -658,7 +668,7 @@ enum {
         
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activity setCenter:CGPointMake(_sendButton.frame.size.width/2, _sendButton.frame.size.height/2)];
-    [_sendButton setTitle:@"" forState:UIControlStateNormal];
+    [self setSendButtonTitle:@""];
     [_sendButton addSubview:activity];
     [activity startAnimating];
     [activity release];
@@ -685,6 +695,10 @@ enum {
         [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
         graphPath = @"me/photos";
     }
+    
+    if ([self.customParameters count] > 0) {
+        [d addEntriesFromDictionary:self.customParameters];
+    }
 
     // create the connection object
     FBRequestConnection *newConnection = [[[FBRequestConnection alloc] init] autorelease];
@@ -700,7 +714,7 @@ enum {
             
             // remove activity
             [[[self.sendButton subviews] lastObject] removeFromSuperview];
-            [self.sendButton setTitle:@"Post" forState:UIControlStateNormal];
+            [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
             self.view.userInteractionEnabled = YES;
             
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Message", @"")
@@ -776,5 +790,53 @@ enum {
     }
 }
 
+#pragma mark - Parent View Controller
+
+- (UIViewController *)parentController
+{
+    float currentVersion = 5.0;
+    float sysVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    
+    if (sysVersion >= currentVersion) {
+        // iOS 5.0 or later version of iOS specific functionality hanled here
+        return self.presentingViewController;
+    }
+    else {
+        //Previous than iOS 5.0 specific functionality
+        return self.parentViewController;
+    }
+}
+
+
+#pragma mark - Button width
+
+- (void)setSendButtonTitle:(NSString *)title
+{
+    UIButton *button = self.sendButton;
+    [button setTitle:title forState:UIControlStateNormal];
+    [self autoSizeButton:button right:YES];
+}
+
+- (void)setCancelButtonTitle:(NSString *)title
+{
+    UIButton *button = self.cancelButton;
+    [button setTitle:title forState:UIControlStateNormal];
+    [self autoSizeButton:button right:NO];
+}
+
+- (void)autoSizeButton:(UIButton *)button right:(BOOL)right
+{
+    NSString *title = button.titleLabel.text;
+    
+    CGSize s = [title sizeWithFont:button.titleLabel.font];
+    s.width += 14.f; // padding
+    
+    CGRect frame = button.frame;
+    CGFloat offset = s.width - frame.size.width;
+    
+    if (right) frame.origin.x -= offset;
+    frame.size.width = s.width;
+    button.frame = frame;
+}
 
 @end
