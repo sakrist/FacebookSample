@@ -34,14 +34,18 @@
 - (IBAction) shareViaFacebook: (id)sender {
     
     DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
+    
+    // If you want to use the Facebook app with multiple iOS apps you can set an URL scheme suffix
+//    facebookViewComposer.urlSchemeSuffix = @"facebooksample";
+    
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     [facebookViewComposer setInitialText:@"Look on this"];
     
     // optional
     [facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
-    // or
+    // and/or
     // optional
-//    [facebookViewComposer addURL:@"http://applications.3d4medical.com/heart_pro.php"];
+//    [facebookViewComposer addURL:[NSURL URLWithString:@"http://applications.3d4medical.com/heart_pro.php"]];
     
     [facebookViewComposer setCompletionHandler:^(DEFacebookComposeViewControllerResult result) {
         switch (result) {
