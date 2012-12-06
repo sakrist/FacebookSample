@@ -50,6 +50,7 @@ static BOOL waitingForAccess = NO;
 @property (nonatomic, retain) DEFacebookGradientView *gradientView;
 @property (nonatomic, retain) UIPickerView *accountPickerView;
 @property (nonatomic, retain) UIPopoverController *accountPickerPopoverController;
+@property (retain, nonatomic) NSString *urlSchemeSuffix;
 
 
 - (void)facebookComposeViewControllerInit;
@@ -113,12 +114,19 @@ enum {
 #pragma mark - Setup & Teardown
 
 
+
+
 - (id)init
 {
     return [self initForceUseCustomController:NO];
 }
 
 - (id)initForceUseCustomController:(BOOL)custom
+{
+    return [self initForceUseCustomController:custom urlSchemeSuffix:nil];
+}
+
+- (id)initForceUseCustomController:(BOOL)custom urlSchemeSuffix:(NSString *)urlSchemeSuffix
 {
     if (!custom && [[UIDevice currentDevice].systemVersion floatValue] >= 6) {
         self = [(DEFacebookComposeViewController*)[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook] retain];
@@ -128,6 +136,7 @@ enum {
     self = [super init];
     if (self) {
         [self facebookComposeViewControllerInit];
+        self.urlSchemeSuffix = urlSchemeSuffix;
     }
     return self;
 }
