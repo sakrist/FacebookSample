@@ -48,6 +48,7 @@ UIPopoverControllerDelegate>
 @property (retain, nonatomic) IBOutlet UIImageView *attachment3ImageView;
 @property (retain, nonatomic) IBOutlet UILabel *characterCountLabel;
 @property (assign, nonatomic) IBOutlet UIImageView *navImage;
+@property (retain, nonatomic) NSString *urlSchemeSuffix;
 
     // Public
 - (IBAction)send;
@@ -87,7 +88,7 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
     // Adds a URL to the tweet. Returns NO if the additional URL will not fit
     // within the character space currently available, or if the sheet has already
     // been presented to the user.
-- (BOOL)addURL:(NSString *)url;
+- (BOOL)addURL:(NSURL *)url;
 
 //    // Removes all URLs from the tweet. Returns NO and does not perform an operation
 //    // if the sheet has already been presented to the user.
