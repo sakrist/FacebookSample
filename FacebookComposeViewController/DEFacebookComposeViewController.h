@@ -48,7 +48,6 @@ UIPopoverControllerDelegate>
 @property (retain, nonatomic) IBOutlet UIImageView *attachment3ImageView;
 @property (retain, nonatomic) IBOutlet UILabel *characterCountLabel;
 @property (assign, nonatomic) IBOutlet UIImageView *navImage;
-@property (retain, nonatomic) NSString *urlSchemeSuffix;
 
     // Public
 - (IBAction)send;
@@ -102,5 +101,8 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
 
     // Force use SLComposeViewController on iOS 6 or not
 - (id)initForceUseCustomController:(BOOL)custom;
+
+// Adds url scheme suffix for DEFacebookComposeViewController (ignored for SLComposeViewController)
+- (id)initForceUseCustomController:(BOOL)custom urlSchemeSuffix:(NSString *)urlSchemeSuffix;
 
 @end
