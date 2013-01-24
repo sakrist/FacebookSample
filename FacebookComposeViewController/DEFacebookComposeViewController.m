@@ -336,6 +336,8 @@ enum {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (self.orientationPortait) return UIInterfaceOrientationPortrait;
+
     if ([self.parentController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
         return [self.parentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
@@ -351,6 +353,8 @@ enum {
 
 - (NSUInteger)supportedInterfaceOrientations
 {
+    if (self.orientationPortait) return UIInterfaceOrientationMaskPortrait;
+    
     if ([self.parentController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
         return (NSUInteger)[self.parentController performSelector:@selector(supportedInterfaceOrientations)];
     }

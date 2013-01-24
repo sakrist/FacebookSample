@@ -102,4 +102,8 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
     // Force use SLComposeViewController on iOS 6 or not
 - (id)initForceUseCustomController:(BOOL)custom;
 
+// Interface orientation option
+
+@property (nonatomic, assign) BOOL orientationPortait;
+
 @end
