@@ -99,6 +99,10 @@ typedef void (^DEFacebookComposeViewControllerCompletionHandler)(DEFacebookCompo
 
 @property (nonatomic, copy) NSDictionary *customParameters;
 
+// use this to post a message to another user's feed (/toProfileId/feed) instead of /me/feed
+// this only supports text messages and setting image(s) will be ignored
+@property (nonatomic, copy) NSString *toProfileId;
+
     // Force use SLComposeViewController on iOS 6 or not
 - (id)initForceUseCustomController:(BOOL)custom;
 

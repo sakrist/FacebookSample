@@ -84,6 +84,7 @@ static BOOL waitingForAccess = NO;
     // Public
 @synthesize completionHandler = _completionHandler;
 @synthesize customParameters = _customParameters;
+@synthesize toProfileId = _toProfileId;
 
     // Private
 @synthesize text = _text;
@@ -190,6 +191,7 @@ enum {
         // Public
     [_completionHandler release], _completionHandler = nil;
     [_customParameters release], _customParameters = nil;
+    [_toProfileId release], _toProfileId = nil;
     
         // Private
     [_text release], _text = nil;
@@ -704,6 +706,10 @@ enum {
     if ([self.images count] > 0) {
         [d setObject:UIImagePNGRepresentation([self.images lastObject]) forKey:@"source"];
         graphPath = @"me/photos";
+    }
+    
+    if (self.toProfileId) {
+        graphPath = [NSString stringWithFormat:@"%@/feed", self.toProfileId];
     }
     
     if ([self.customParameters count] > 0) {
