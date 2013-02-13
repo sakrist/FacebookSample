@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Facebook ComposeViewController by sakrist</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Facebook ComposeViewController</h1>
+        <p>Facebook compose sheet view controller like in iOS 6.0</p>
+
+        <p class="view"><a href="https://github.com/sakrist/FacebookSample">View the Project on GitHub <small>sakrist/FacebookSample</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/sakrist/FacebookSample/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/sakrist/FacebookSample/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/sakrist/FacebookSample">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>This project based on <a href="https://github.com/doubleencore/DETweetComposeViewController">https://github.com/doubleencore/DETweetComposeViewController</a></p>
+
+<p>Facebook connection based on SDK 3.1 (last at 25 september 2012)</p>
+
+<p>What is it?
+DEFacebookComposeViewController is an iOS 4 compatible. 
+Looks like as the Facebook Sheet in iOS 6.</p>
+
+<p><img src="https://raw.github.com/sakrist/FacebookSample/master/Screen%20Shot%202012-09-10%20at%2010.30.48%20PM.jpg"></p>
+
+<p>How to use</p>
+
+<ol>
+<li><p>download and setup Facebook sdk <a href="https://developers.facebook.com/ios/">https://developers.facebook.com/ios/</a> or from git <a href="https://github.com/facebook/facebook-ios-sdk">https://github.com/facebook/facebook-ios-sdk</a></p></li>
+<li><p>register your app on <a href="http://developers.facebook.com">http://developers.facebook.com</a></p></li>
+<li><p>replace on your app id in plist file. FacebookAppID and in CFBundleURLTypes</p></li>
+<li><p>#import "DEFacebookComposeViewController.h"</p></li>
+<li>
+<p>example of usage</p>
+
+<pre><code>DEFacebookComposeViewControllerCompletionHandler completionHandler = ^(DEFacebookComposeViewControllerResult result) {
+    switch (result) {
+        case DEFacebookComposeViewControllerResultCancelled:
+            NSLog(@"Facebook Result: Cancelled");
+            break;
+        case DEFacebookComposeViewControllerResultDone:
+            NSLog(@"Facebook Result: Sent");
+            break;
+    }
+
+    [self dismissModalViewControllerAnimated:YES];
+};
+
+DEFacebookComposeViewController *facebookViewComposer = [[DEFacebookComposeViewController alloc] init];
+self.modalPresentationStyle = UIModalPresentationCurrentContext;
+[facebookViewComposer setInitialText:@"Look on this"];
+[facebookViewComposer addImage:[UIImage imageNamed:@"1.jpg"]];
+facebookViewComposer.completionHandler = completionHandler;
+[self presentViewController:facebookViewComposer animated:YES completion:^{ }]; 
+</code></pre>
+</li>
+<li>
+<p>add this code to your main class and you should be sure if app is entered to this method</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application
+        openURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+     annotation:(id)annotation {
+
+// attempt to extract a token from the url
+return [FBSession.activeSession handleOpenURL:url];
+}
+</code></pre>
+</li>
+</ol><p>Post on my blog <a href="http://www.developers-life.com/facebook-compose-view.html">http://www.developers-life.com/facebook-compose-view.html</a>
+Welcome for any questions</p>
+
+<p>If you liked it, you can support me:</p>
+
+<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=B4VMLFZ986FNW">
+<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"></a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/sakrist">sakrist</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
