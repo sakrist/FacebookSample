@@ -34,9 +34,6 @@
 
 #import <Social/Social.h>
 
-static BOOL waitingForAccess = NO;
-
-
 @interface DEFacebookComposeViewController ()
 
 @property (nonatomic, copy) NSString *text;
