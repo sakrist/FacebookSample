@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D20EFFFC16150D0800614CD0 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20EFFFB16150D0800614CD0 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D20EFFFE16150D1300614CD0 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20EFFFD16150D1300614CD0 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D2B6437A16E93E7D00DB00B5 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B6437816E93E7D00DB00B5 /* MainWindow.xib */; };
+		D2B6437D16E93F3000DB00B5 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B6437B16E93F3000DB00B5 /* RootViewController.xib */; };
 		D2C3C0F416218BCD00CD553A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C3C0F216218BBF00CD553A /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D2C3C1071621927300CD553A /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C3C1031621927300CD553A /* Icon-57.png */; };
 		D2C3C1081621927300CD553A /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C3C1041621927300CD553A /* Icon-72.png */; };
@@ -22,8 +24,6 @@
 		E77E53E115FE483600C6018A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E53E015FE483600C6018A /* main.m */; };
 		E77E53E515FE483600C6018A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E53E415FE483600C6018A /* AppDelegate.m */; };
 		E77E53E815FE483600C6018A /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E53E715FE483600C6018A /* RootViewController.m */; };
-		E77E53F115FE483600C6018A /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E77E53EF15FE483600C6018A /* MainStoryboard_iPhone.storyboard */; };
-		E77E53F415FE483600C6018A /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E77E53F215FE483600C6018A /* MainStoryboard_iPad.storyboard */; };
 		E77E542115FE485600C6018A /* DEFacebookComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77E53FB15FE485600C6018A /* DEFacebookComposeView.xib */; };
 		E77E542215FE485600C6018A /* DEFacebookComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E53FD15FE485600C6018A /* DEFacebookComposeViewController.m */; };
 		E77E542315FE485600C6018A /* DEFacebookGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E53FF15FE485600C6018A /* DEFacebookGradientView.m */; };
@@ -61,6 +61,8 @@
 /* Begin PBXFileReference section */
 		D20EFFFB16150D0800614CD0 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		D20EFFFD16150D1300614CD0 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		D2B6437916E93E7D00DB00B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		D2B6437C16E93F3000DB00B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RootViewController.xib; sourceTree = "<group>"; };
 		D2C3C0F216218BBF00CD553A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D2C3C1031621927300CD553A /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "Icon/Icon-57.png"; sourceTree = "<group>"; };
 		D2C3C1041621927300CD553A /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Icon/Icon-72.png"; sourceTree = "<group>"; };
@@ -191,6 +193,8 @@
 				E77E53E415FE483600C6018A /* AppDelegate.m */,
 				E77E53E615FE483600C6018A /* RootViewController.h */,
 				E77E53E715FE483600C6018A /* RootViewController.m */,
+				D2B6437B16E93F3000DB00B5 /* RootViewController.xib */,
+				D2B6437816E93E7D00DB00B5 /* MainWindow.xib */,
 				E77E53EF15FE483600C6018A /* MainStoryboard_iPhone.storyboard */,
 				E77E53F215FE483600C6018A /* MainStoryboard_iPad.storyboard */,
 				E77E53FA15FE485600C6018A /* FacebookComposeViewController */,
@@ -316,8 +320,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E77E53DF15FE483600C6018A /* InfoPlist.strings in Resources */,
-				E77E53F115FE483600C6018A /* MainStoryboard_iPhone.storyboard in Resources */,
-				E77E53F415FE483600C6018A /* MainStoryboard_iPad.storyboard in Resources */,
 				E77E542115FE485600C6018A /* DEFacebookComposeView.xib in Resources */,
 				E77E542715FE485600C6018A /* DEFacebookAttachmentFrame.png in Resources */,
 				E77E542815FE485600C6018A /* DEFacebookAttachmentFrame@2x.png in Resources */,
@@ -346,6 +348,8 @@
 				D2C3C1081621927300CD553A /* Icon-72.png in Resources */,
 				D2C3C1091621927300CD553A /* Icon-114.png in Resources */,
 				D2C3C10A1621927300CD553A /* Icon-144.png in Resources */,
+				D2B6437A16E93E7D00DB00B5 /* MainWindow.xib in Resources */,
+				D2B6437D16E93F3000DB00B5 /* RootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +376,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D2B6437816E93E7D00DB00B5 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2B6437916E93E7D00DB00B5 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		D2B6437B16E93F3000DB00B5 /* RootViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2B6437C16E93F3000DB00B5 /* en */,
+			);
+			name = RootViewController.xib;
+			sourceTree = "<group>";
+		};
 		E77E53DD15FE483600C6018A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -457,7 +477,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FacebookSample/FacebookSample-Prefix.pch";
 				INFOPLIST_FILE = "FacebookSample/FacebookSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -476,7 +496,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FacebookSample/FacebookSample-Prefix.pch";
 				INFOPLIST_FILE = "FacebookSample/FacebookSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
