@@ -11,6 +11,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 #import <Social/Social.h>
+#import "UIDevice+DEFacebookComposeViewController.h"
 
 @interface RootViewController ()
 @end
@@ -60,7 +61,11 @@
         [self dismissModalViewControllerAnimated:YES];
     }];
     
-    [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
+    if ([UIDevice de_isIOS4]) {
+        [self presentModalViewController:facebookViewComposer animated:YES];
+    } else {
+        [self presentViewController:facebookViewComposer animated:YES completion:^{ }];
+    }
     
     [facebookViewComposer release];
 
