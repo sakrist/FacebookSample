@@ -34,9 +34,6 @@
 
 #import <Social/Social.h>
 
-static BOOL waitingForAccess = NO;
-
-
 @interface DEFacebookComposeViewController ()
 
 @property (nonatomic, copy) NSString *text;
@@ -50,6 +47,7 @@ static BOOL waitingForAccess = NO;
 @property (nonatomic, retain) DEFacebookGradientView *gradientView;
 @property (nonatomic, retain) UIPickerView *accountPickerView;
 @property (nonatomic, retain) UIPopoverController *accountPickerPopoverController;
+@property (retain, nonatomic) NSString *urlSchemeSuffix;
 
 
 - (void)facebookComposeViewControllerInit;
@@ -113,12 +111,19 @@ enum {
 #pragma mark - Setup & Teardown
 
 
+
+
 - (id)init
 {
     return [self initForceUseCustomController:NO];
 }
 
 - (id)initForceUseCustomController:(BOOL)custom
+{
+    return [self initForceUseCustomController:custom urlSchemeSuffix:nil];
+}
+
+- (id)initForceUseCustomController:(BOOL)custom urlSchemeSuffix:(NSString *)urlSchemeSuffix
 {
     if (!custom && [[UIDevice currentDevice].systemVersion floatValue] >= 6) {
         self = [(DEFacebookComposeViewController*)[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook] retain];
@@ -128,6 +133,7 @@ enum {
     self = [super init];
     if (self) {
         [self facebookComposeViewControllerInit];
+        self.urlSchemeSuffix = urlSchemeSuffix;
     }
     return self;
 }
@@ -193,7 +199,7 @@ enum {
     [_accountPickerView release], _accountPickerView = nil;
     [_accountPickerPopoverController release], _accountPickerPopoverController = nil;
     
-    NSLog(@"DEALLOC DEFacebookComposeViewController");
+//    NSLog(@"DEALLOC DEFacebookComposeViewController");
     
     [super dealloc];
 }
@@ -480,7 +486,7 @@ enum {
 }
 
 
-- (BOOL)addURL:(NSString *)url
+- (BOOL)addURL:(NSURL *)url
 {
     [self.urls removeAllObjects];
     if (url == nil) {
@@ -665,21 +671,22 @@ enum {
     
     if (![FBSession.activeSession isOpen]) {
         
-        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"publish_stream", nil]
-                                           defaultAudience:FBSessionDefaultAudienceEveryone
-                                              allowLoginUI:YES
-
-                                  completionHandler:^(FBSession *session,
-                                                      FBSessionState status,
-                                                      NSError *error) {
-                                      
-                                      if (error) {
-                                          NSLog(@"error");
-                                      } else {
-                                          [FBSession setActiveSession:session];
-                                          [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
-                                      }
-                                  }];
+        FBSession *session = [[FBSession alloc] initWithAppID:nil
+                                                  permissions:[NSArray arrayWithObjects:@"publish_stream", nil]
+                                              urlSchemeSuffix:self.urlSchemeSuffix
+                                           tokenCacheStrategy:nil];
+        
+        [FBSession setActiveSession:session];
+        [session openWithCompletionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             if (error) {
+//                 NSLog(@"Connection error: %@ - %@", error.localizedDescription, error.userInfo);
+             } else {
+                 [FBSession setActiveSession:session];
+                 [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
+             }
+         }];
+        [session release];
         
         return;
     }
@@ -697,7 +704,7 @@ enum {
     
     NSMutableDictionary *d = nil;
     if ( [self.urls count] > 0 && [self.images count] > 0 ) {
-        d = [NSMutableDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@\n%@",self.textView.text,[self.urls lastObject]]
+        d = [NSMutableDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@\n%@",self.textView.text,[[self.urls lastObject] absoluteString]]
                                                forKey:@"message"];
     } else {
         d = [NSMutableDictionary dictionaryWithObject:self.textView.text
@@ -709,7 +716,7 @@ enum {
     
     
     if ([self.urls count] > 0) {
-        [d setObject:[self.urls lastObject] forKey:@"link"];
+        [d setObject:[[self.urls lastObject] absoluteString] forKey:@"link"];
     }
     
     if ([self.images count] > 0) {
@@ -731,7 +738,7 @@ enum {
     [newConnection addRequest:request completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (error)
         {
-            NSLog(@"    error");
+//            NSLog(@"    error");
             
             // remove activity
             [[[self.sendButton subviews] lastObject] removeFromSuperview];
@@ -768,7 +775,7 @@ enum {
                 [self dismissModalViewControllerAnimated:YES];
             }
 
-            NSLog(@"   ok");
+//            NSLog(@"   ok");
         };
     }];
     

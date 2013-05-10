@@ -21,6 +21,12 @@
 
 @implementation UIDevice (DEFacebookComposeViewController)
 
++ (BOOL)de_isIOS4
+{
+    
+    return ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0f);
+}
+
 + (BOOL)de_isIOS5
 {
     return (NSClassFromString(@"NSJSONSerialization") != nil);

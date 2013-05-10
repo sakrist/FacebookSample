@@ -20,6 +20,7 @@
 
 @interface UIDevice (DEFacebookComposeViewController)
 
++ (BOOL)de_isIOS4;
 + (BOOL)de_isIOS5;
 + (BOOL)de_isPad;
 + (BOOL)de_isPhone;

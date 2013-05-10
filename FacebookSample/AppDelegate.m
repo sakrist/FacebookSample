@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
-
+#import "RootViewController.h"
 
 void uncaughtExceptionHandler(NSException *exception) {
     
@@ -27,11 +27,13 @@ void uncaughtExceptionHandler(NSException *exception) {
     [super dealloc];
 }
 
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-//{
-//    // Override point for customization after application launch.
-//    return YES;
-//}
+- (void)applicationDidFinishLaunching:(UIApplication *)application {
+
+    RootViewController *rootViewController = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
+    [_window setRootViewController:rootViewController];
+    
+    [_window makeKeyAndVisible];
+}
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
