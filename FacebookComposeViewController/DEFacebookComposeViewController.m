@@ -338,8 +338,12 @@ enum {
 }
 
 
+// <= iOS 5
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (self.orientationPortait) return UIInterfaceOrientationPortrait;
+
     if ([self.parentController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
         return [self.parentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
@@ -349,6 +353,23 @@ enum {
     }
 
     return YES;  // Default for iPad.
+}
+
+// >= iOS 6
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (self.orientationPortait) return UIInterfaceOrientationMaskPortrait;
+    
+    if ([self.parentController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+        return (NSUInteger)[self.parentController performSelector:@selector(supportedInterfaceOrientations)];
+    }
+    
+    if ([UIDevice de_isPhone]) {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+
+    return UIInterfaceOrientationMaskAll; // Default for iPad.
 }
 
 
