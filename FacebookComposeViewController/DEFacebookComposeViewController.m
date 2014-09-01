@@ -552,7 +552,7 @@ enum {
     CGFloat cardLeft = trunc((CGRectGetWidth(self.view.bounds) - cardWidth) / 2);
     self.cardView.frame = CGRectMake(cardLeft, cardTop, cardWidth, cardHeight);
     
-    self.navImage.frame = CGRectMake(0, 0, cardWidth, 44);
+    self.navImage.frame = CGRectMake(0, 0, cardWidth, cardHeaderLineTop + 3);
     
     self.titleLabel.font = [UIFont boldSystemFontOfSize:titleLabelFontSize];
     self.titleLabel.frame = CGRectMake(0.0f, titleLabelTop, cardWidth, self.titleLabel.frame.size.height);
