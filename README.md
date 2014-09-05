@@ -43,7 +43,7 @@ How to use
 ```
 
 
-6. add this code to your main class and you should be sure if app is entered to this method
+6. add this code to your main class and you need to be sure that app is entering to this method
 ```
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
