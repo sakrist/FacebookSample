@@ -58,7 +58,6 @@ How to use
 
 
 
-Post on my blog http://www.developers-life.com/facebook-compose-view.html
 Welcome for any questions
 
 If you liked it, you can support me:
